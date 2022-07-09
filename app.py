@@ -95,9 +95,7 @@ def index():
 
 	# generate plot
 	ax = df.plot(figsize = (20,9)) 
-	ax.plot(df.index.values,
-        df['Volume($)'],
-       color='red')
+	ax.plot(df.index.values,df['Volume($)'],color='red')
 
 	plt.xlabel("2022 DATE", fontweight='bold')                           
 	plt.ylabel("VOLUME", fontweight='bold')                          
@@ -115,9 +113,7 @@ def index():
 
 	# generate plot open
 	ax_o = df_o.plot(figsize = (20,9)) 
-	ax_o.plot(df_o.index.values,
-        df_o['Open($)'],
-       color='blue')
+	ax_o.plot(df_o.index.values,df_o['Open($)'],color='blue')
 
 	plt.xlabel("2022 DATE", fontweight='bold')                           
 	plt.ylabel("OPEN($)", fontweight='bold')                          
