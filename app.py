@@ -91,7 +91,7 @@ df_o.drop('Date',inplace=True, axis=1)
 @app.route("/")
 def index(): 
 	
-	card_data = f'{df["Volume($)"].mean()}' #be careful with the " and ' 
+	card_data = f'${df["Volume($)"].mean().round(0):,.0f}' #be careful with the " and ' 
 
 	# generate plot
 	ax = df.plot(figsize = (20,9)) 
@@ -112,8 +112,8 @@ def index():
 	plot_result = str(figdata_png)[2:-1]
 
 	# generate plot open
-	ax_o = df_o.plot(figsize = (20,9)) 
-	ax_o.plot(df_o.index.values,df_o['Open($)'],color='blue')
+	ax = df_o.plot(figsize = (20,9)) 
+	ax.plot(df_o.index.values,df_o['Open($)'],color='blue')
 
 	plt.xlabel("2022 DATE", fontweight='bold')                           
 	plt.ylabel("OPEN($)", fontweight='bold')                          
@@ -123,49 +123,40 @@ def index():
 
 	# Rendering plot open
 	# Do not change this
-	figfile_o = BytesIO()
-	plt.savefig(figfile_o, format='png', transparent=True)
-	figfile_o.seek(0)
-	figdata_pngo = base64.b64encode(figfile_o.getvalue())
-	plot_resulto = str(figdata_pngo)[2:-1]
+	figfile = BytesIO()
+	plt.savefig(figfile, format='png', transparent=True)
+	figfile.seek(0)
+	figdata_png = base64.b64encode(figfile.getvalue())
+	plot_result2 = str(figdata_png)[2:-1]
+
+	# generate graph:all-in-one
+	fig, axes = plt.subplots(2,figsize=(20, 14))
+	axes[0].plot(df.index.values,df['Volume($)'],color='red')
+	axes[0].set_ylabel('VOLUME', fontsize=12)
+	axes[0].set_xticklabels(np.array(df.index),rotation=45)
+	axes[1].plot(df_o.index.values,df_o['Open($)'],color='blue')
+	axes[1].set_ylabel('OPEN', fontsize=12)
+
+	plt.xlabel("2022 DATE", fontweight='bold')  
+	plt.xticks(np.array(df_o.index),np.array(df_o.index),rotation=45)
+	plt.yticks(rotation=45)
+
+	# Rendering plot all-in-one
+	# Do not change this
+	figfile = BytesIO()
+	plt.savefig(figfile, format='png', transparent=True)
+	figfile.seek(0)
+	figdata_png = base64.b64encode(figfile.getvalue())
+	plot_result3 = str(figdata_png)[2:-1]
 
 	# render to html
 	return render_template('index.html',
 		card_data = card_data, 
 		plot_result=plot_result,
-		plot_resulto = plot_resulto
+		plot_result2 = plot_result2,
+		plot_result3 = plot_result3
 		)
 
-#@app.route("/")
-#def index1(): 
-	
-#	card_data = f'{df_o["Open($)"].mean()}' #be careful with the " and ' 
-
-#	# generate plot
-#	ax_o = df_o.plot(figsize = (20,9)) 
-#	ax_o.plot(df_o.index.values,
-#        df_o['Open($)'],
-#      color='blue')
-
-#	plt.xlabel("2022 DATE", fontweight='bold')                           
-#	plt.ylabel("OPEN($)", fontweight='bold')                          
-#	plt.xticks(np.array(df_o.index),np.array(df_o.index),rotation=45)
-#	plt.yticks(rotation=45)
-#	plt.legend(fontsize=12)
-
-#	# Rendering plot
-#	# Do not change this
-#	figfile = BytesIO()
-#	plt.savefig(figfile, format='png', transparent=True)
-#	figfile.seek(0)
-#	figdata_png = base64.b64encode(figfile.getvalue())
-#	plot_result = str(figdata_png)[2:-1]
-
-#	# render to html
-#	return render_template('index.html',
-#		card_data = card_data, 
-#		plot_result1=plot_result
-#		)
 
 if __name__ == "__main__": 
     app.run(debug=True)

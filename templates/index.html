@@ -43,9 +43,11 @@
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12">
 				<div class="tab">
-					<button class="tablinks" onclick="openTab(event, 'profile') " id="defaultOpen">by Rangga
+					<button class="tablinks" onclick="openTab(event, 'profile') " id="defaultOpen">by Rangga-Sparta
 					</button>
-					<button class="tablinks" onclick="openTab(event, 'Own')">(Create-Your-Own)
+					<button class="tablinks" onclick="openTab(event, 'Own')">Open Price
+					</button>
+					<button class="tablinks" onclick="openTab(event, 'All')">All in One
 					</button>
 				</div>
 			</div>
@@ -67,8 +69,18 @@
 				  	<br>
 				  	<h3 style="color: #333333;text-align:center">Open Price</h3>
 				  	<div class="img-container"">
-					  	{% if funded_plot != None %}
-					  <img src="data:image/png;base64,{{ plot_resulto }}" >
+					  	{% if plot_result2 != None %}
+					  <img src="data:image/png;base64,{{ plot_result2 }}" >
+					    {% endif %}
+				  	</div>
+				</div>
+				<div id="All" class="tabcontent">
+				  <!-- For All in One Graph -->
+				  	<br>
+				  	<h3 style="color: #333333;text-align:center">Graph: Volume VS Open</h3>
+				  	<div class="img-container"">
+					  	{% if plot_result3 != None %}
+					  <img src="data:image/png;base64,{{ plot_result3 }}" >
 					    {% endif %}
 				  	</div>
 				</div>
